@@ -1,5 +1,4 @@
 #esta función unicamente imprime un menu en la consola
-paises = []
 def mostrar_menu():
     print("""
         -------Menu de Gestión de Datos de Países-------
@@ -11,7 +10,7 @@ def mostrar_menu():
         6- Salir
 """)
 
-def ingreso_de_dato():
+def ingreso_de_dato(paises):
     while True:
         nombre = input("Ingrese el nombre del país: ").strip().capitalize()
         if nombre == "" or nombre.isdigit():
