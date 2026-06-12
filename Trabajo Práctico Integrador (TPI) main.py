@@ -1,5 +1,5 @@
 from funciones import *
-paises=[]
+paises=carga_datos()
 def main():
     while True:
         mostrar_menu()
@@ -7,17 +7,17 @@ def main():
 
         try:
             match opciones:
-                case "1":
+                case 1:
+                    agregar_pais(paises)
+                case 2:
                     pass
-                case "2":
+                case 3:
                     pass
-                case "3":
+                case 4:
                     pass
-                case "4":
+                case 5:
                     pass
-                case "5":
-                    pass
-                case "6":
+                case 6:
                     print("Gracias por usar el programa")
                     break
         except ValueError:
