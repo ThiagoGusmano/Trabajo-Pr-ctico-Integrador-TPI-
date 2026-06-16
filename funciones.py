@@ -3,17 +3,7 @@ import os
 
 archivo_csv = "paises.csv"
 
-def mostrar_menu():
-    print("""
-        \n
-        -------Menu de Gestión de Datos de Países-------
-        1- Agregar pais y continente
-        2- Actualizar datos de pobleción y superficie
-        3- Filtra países
-        4- Ordenar países
-        5- Mostrar estadíscas
-        6- Salir
-""")
+#funciones de normalización y validación :O
 
 def normalizar_texto(texto):
     texto = texto.lower().strip()
@@ -73,6 +63,8 @@ def leer_continente():
         else:
             print("Opción inválida. Por favor, intente nuevamente.")
 
+# manejo de archivos :P
+
 def carga_datos():
     paises= []
     if not os.path.exists(archivo_csv):
@@ -104,6 +96,8 @@ def guardar_datos(paises:list):
             writer.writerows(paises)
     except Exception as e:
         print(f"Error al guardar los datos: {e}")
+
+#funciones full del sistema del tpi :D
 
 def agregar_pais(paises:list):
     nombre = leer_cadena("Ingrese el nombre del país: ")
@@ -137,6 +131,97 @@ def actualizar_datos(paises:list):
             print(f"Datos de '{pais['nombre']}' actualizados exitosamente.")
             return
     print("Error: País no encontrado en la lista.")
+
+def buscar_pais(paises:list):
+    print("\n--- BUSCAR PAÍS ---")
+    termino = leer_cadena("Ingrese el nombre a buscar (parcial o exacto): ")
+    termino_norm = normalizar_texto(termino)
+
+    resultados = [p for p in paises if termino_norm in normalizar_texto (p["nombre"])]
+
+    if resultados:
+        imprimir_tabla(resultados)
+    else:
+        print("no se encontraron coicidencias.")
+
+def filtrar_pais(paises:list):
+    print("\n--- FILTRAR PAÍSES ---")
+    print("1. Por Continente")
+    print("2. Por Rango de Población")
+    print("3. Por Rango de Superficie")
+    opcion = input("Elija una opción de filtro: ")
+
+    resultados = []
+    if opcion == "1":
+        continente = leer_continente()
+        resultados = [p for p in paises if normalizar_texto (p["continente"]) == normalizar_texto(continente)]
+    elif opcion == "2":
+        min_pob = leer_entero("Superficie mínima: ")
+        max_pob = leer_entero("Superficie maxima: ")
+        resultados = [p for p in paises if min_pob <= p['poblacion'] <= max_pob]
+    elif opcion == "3":
+        min_sup = leer_entero("Superficie mínima: ")
+        max_sup = leer_entero("Superficie maxima: ")
+        resultados = [p for p in paises if min_sup <= p['superficie'] <= max_sup]
+    else:
+        print("Opción invalida.")
+        return
+    
+    if resultados:
+        imprimir_tabla(resultados)
+    else:
+        print("No hay países que cumplan con los criterios. ")
+
+def ordenar_paises(paises:list):
+    print("\n--- ORDENAR PAÍSES ---")
+    print("1. Por Nombre (Alfabético)")
+    print("2. Por Población")
+    print("3. Por Superficie")
+    opcion = input("Elija un criterio: ")
+
+    if opcion not in ['1', '2', '3']:
+        print("Opción inválida.")
+        return
+    
+    orden = input("¿Orden Ascendete (A) o Desendente (D)?: ").strip().upper()
+    desendente = True if orden == "D" else False
+
+    if opcion == "1":
+        paises_ordenados = sorted(paises, key=lambda x: x["nombre"], reverse=desendente)
+    if opcion == "2":
+        paises_ordenados = sorted(paises, key=lambda x: x["poblacion"], reverse=desendente)
+    if opcion == "3":
+        paises_ordenados = sorted(paises, key=lambda x: x["superficie"], reverse=desendente)
+
+    imprimir_tabla(paises_ordenados)
+
+def mostrar_estadisticas(paises: list):
+    print("\n--- ESTADÍSTICAS ---")
+
+    pais_mayor_pob = max(paises, key=lambda x: x["poblacion"])
+    pais_menor_pob = min(paises, key=lambda x: x["poblacion"])
+
+    total_poblacion = sum (p["poblacion"] for p in paises)
+    total_superficie = sum (p["superficie"] for p in paises)
+    promedio_pob = total_poblacion / len(paises)
+    promedio_sup = total_superficie / len(paises)
+
+    conteo_continentes = {}
+    for p in paises:
+        cont = p["continente"]
+        if cont in conteo_continentes:
+            conteo_continentes[cont] += 1
+        else:
+            conteo_continentes[cont] = 1
+
+    print(f"País con MAYOR población: {pais_mayor_pob['nombre']} ({pais_mayor_pob['poblacion']:,})")
+    print(f"País con MENOR población: {pais_menor_pob['nombre']} ({pais_menor_pob['poblacion']:,})")
+    print(f"Promedio de población global: {promedio_pob:,.2f}")
+    print(f"Promedio de superficie global: {promedio_sup:,.2f} km²")
+    print("\nCantidad de países por continente:")
+    for cont, cant in conteo_continentes.items():
+        print(f" - {cont}: {cant}")
+#la funcion imprimir tablas es mas para enbellecer el resultado de la funcion filtrar paises UwU
 
 def imprimir_tabla(paises: list):
     print(f"\n{'-'*65}")
