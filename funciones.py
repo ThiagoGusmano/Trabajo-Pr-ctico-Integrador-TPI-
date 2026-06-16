@@ -221,6 +221,7 @@ def mostrar_estadisticas(paises: list):
     print("\nCantidad de países por continente:")
     for cont, cant in conteo_continentes.items():
         print(f" - {cont}: {cant}")
+
 #la funcion imprimir tablas es mas para enbellecer el resultado de la funcion filtrar paises UwU
 
 def imprimir_tabla(paises: list):
