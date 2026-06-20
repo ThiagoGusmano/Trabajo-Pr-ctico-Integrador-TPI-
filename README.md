@@ -17,3 +17,7 @@ Egipto,África, poblacion: 112000000, superficie: 1002450
 Australia,Oceanía, poblacion: 27000000, superficie: 7692024
 Nigeria,África, poblacion: 227000000, superficie: 923768
 Alemania,Europa, poblacion: 84000000, superficie: 357022
+
+enlace al video demostrativo: https://youtu.be/8NGoQ5YpfQ4
+
+Documentacion del proyecto: (/Trabajo_Practico_Integrador-Documentacion_Academica_y_Técnica-Gusmano_y_Ortubia.pdf)
